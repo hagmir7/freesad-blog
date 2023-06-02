@@ -558,13 +558,13 @@ def languagUpdate(request):
 def export_post(request):
     post = PostResource()
     list = Post.objects.all()
-    paginator = Paginator(list, 100) 
+    paginator = Paginator(list, 500) 
     page_number = request.GET.get('page')
     queryset = paginator.get_page(page_number)
     dataset = post.export(queryset)
     # Choose the desired export format (e.g., xlsx, csv)
     response = HttpResponse(dataset.xlsx, content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-    response['Content-Disposition'] = 'attachment; filename="exported_data.xlsx"'
+    response['Content-Disposition'] = f'attachment; filename="prots-{page_number}.xlsx"'
 
     return response
 
