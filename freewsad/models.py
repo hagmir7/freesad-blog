@@ -3,6 +3,14 @@ from django.contrib.auth.models import User
 
 from django.utils.text import slugify
 from django.utils.crypto import get_random_string
+import uuid
+
+def filename(instance, filename):
+    # Generate a unique filename for the image
+    ext = filename.split('.')[-1]  # Get the file extension
+    unique_filename = f'{uuid.uuid4().hex}.{ext}'
+    return unique_filename
+
 
 
 
@@ -56,6 +64,8 @@ class PostList(models.Model):
         else:
             self.slug = slugify(str(self.name) +"-"+ str(random))
         super(PostList, self).save(*args, **kwargs)
+
+
        
 
 class Post(models.Model):
@@ -93,6 +103,13 @@ class Post(models.Model):
             self.slug = slugify(get_random_string(length=40).upper())
         else:
             self.slug = slugify(str(self.title) +"-"+ str(random))
+
+        # Generate image name
+        if self.image:
+            original_filename = self.image.name
+            new_filename = filename(self, original_filename)
+            self.image.name = new_filename
+
         super(Post, self).save(*args, **kwargs)
     
     def next(self):
@@ -153,6 +170,8 @@ class BookList(models.Model):
     language = models.ForeignKey(Language, on_delete=models.CASCADE ,blank=True, null=True)
     date = models.DateTimeField(auto_now_add=True)
 
+    
+
     def __str__(self):
         return self.name
 
@@ -163,8 +182,6 @@ class BookCategory(models.Model):
 
     def __str__(self):
         return self.name
-
-import PyPDF2
 
 
 
@@ -226,6 +243,16 @@ class Book(models.Model):
             self.slug = slugify(self.name +"-"+ str(random))[0:30]
         self.size = self.getSize()
         self.book_type = self.getType()
+        # Generate image name
+        if self.image:
+            original_filename = self.image.name
+            new_filename = filename(self, original_filename)
+            self.image.name = new_filename
+
+        if self.file:
+            original_filename = self.file.name
+            new_filename = filename(self, original_filename)
+            self.file.name = new_filename
 
         super(Book, self).save(*args, **kwargs)
 

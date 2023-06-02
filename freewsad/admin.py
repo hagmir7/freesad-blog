@@ -1,6 +1,18 @@
 from django.contrib import admin
 from .models import *
+
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.contrib.auth.models import User
 from import_export.admin import ImportExportModelAdmin
+
+# Unregister the User model from the default admin
+admin.site.unregister(User)
+
+@admin.register(User)
+class UserAdmin(BaseUserAdmin, ImportExportModelAdmin):
+    pass
+
+
 
 # Post
 admin.site.register(PostComment)
