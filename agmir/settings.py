@@ -217,14 +217,15 @@ WHITENOISE_MANIFEST_STRICT = False
 
 
 # Cors allow origins API
-CORS_ALLOW_ALL_ORIGINS = False
-ACCESS_CONTROL_ALLOW_ORIGIN = True
-CORS_ORIGIN_ALLOW_ALL = False
+# CORS_ALLOW_ALL_ORIGINS = False
+# ACCESS_CONTROL_ALLOW_ORIGIN = True
+# CORS_ORIGIN_ALLOW_ALL = False
 
 
 CORS_ALLOWED_ORIGINS = [
     'https://www.freewsad.com',
     'https://freewsad.com',
+    'http://localhost:3000'
 ]
 
 
